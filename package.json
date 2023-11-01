@@ -1,0 +1,71 @@
+{
+  "name": "rss-reader",
+  "private": true,
+  "version": "0.0.1",
+  "type": "module",
+  "packageManager": "bun@1.0.7",
+  "scripts": {
+    "dev": "vite",
+    "build": "tsc && vite build",
+    "check": "tsc --incremental --noEmit && rm -f tsconfig.tsbuildinfo",
+    "lint": "eslint . --cache --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
+    "lint:fix": "eslint . --ext ts,tsx --fix",
+    "format": "prettier --cache --write \"src/**/*.{ts,tsx,json,css,scss,md}\"",
+    "preview": "vite preview",
+    "tauri": "tauri",
+    "preinstall": "npx only-allow bun",
+    "postinstall": "simple-git-hooks"
+  },
+  "simple-git-hooks": {
+    "pre-commit": "bun run lint && bun check && bun lint-staged",
+    "commit-msg": "node scripts/verifyCommit.js"
+  },
+  "lint-staged": {
+    "*.{js,json,md,css,scss}": [
+      "prettier --cache --write"
+    ],
+    "*.ts?(x)": [
+      "eslint --cache --fix",
+      "prettier --cache --parser=typescript --write"
+    ]
+  },
+  "engines": {
+    "node": ">=18.x"
+  },
+  "dependencies": {
+    "@tauri-apps/api": "^1.5.0",
+    "class-variance-authority": "^0.7.0",
+    "clsx": "^2.0.0",
+    "lucide-react": "^0.291.0",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "tailwind-merge": "^2.0.0",
+    "tailwindcss-animate": "^1.0.7"
+  },
+  "devDependencies": {
+    "@tauri-apps/cli": "^1.5.0",
+    "@types/node": "^20.8.10",
+    "@types/react": "^18.2.15",
+    "@types/react-dom": "^18.2.7",
+    "@typescript-eslint/eslint-plugin": "^6.0.0",
+    "@typescript-eslint/parser": "^6.0.0",
+    "@vitejs/plugin-react": "^4.0.3",
+    "autoprefixer": "^10.4.16",
+    "eslint": "^8.52.0",
+    "eslint-config-prettier": "^9.0.0",
+    "eslint-plugin-prettier": "^5.0.1",
+    "eslint-plugin-react": "^7.33.2",
+    "eslint-plugin-react-hooks": "^4.6.0",
+    "eslint-plugin-react-refresh": "^0.4.3",
+    "lint-staged": "^15.0.1",
+    "postcss": "^8.4.31",
+    "postcss-import": "^15.1.0",
+    "prettier": "^3.0.3",
+    "prettier-plugin-tailwindcss": "^0.5.6",
+    "simple-git-hooks": "^2.9.0",
+    "tailwindcss": "^3.3.3",
+    "typescript": "^5.0.2",
+    "vite": "^4.4.4",
+    "vite-tsconfig-paths": "^4.2.1"
+  }
+}
