@@ -1,0 +1,12 @@
+{
+  "tauri": {
+    "systemTray": {
+      "iconPath": "icons/icon.ico",
+      "iconAsTemplate": true
+    },
+    "bundle": {
+      "identifier": "com.rss.desktop",
+      "resources": ["resources/*"]
+    }
+  }
+}
