@@ -1,12 +1,22 @@
 // Prevents additional console window on Windows in release, DO NOT REMOVE!!
 #![cfg_attr(not(debug_assertions), windows_subsystem = "windows")]
 
+mod config;
+mod window;
+mod server;
+mod cmd;
+mod updater;
+
 use log::info;
-use tauri::App;
 use tauri_plugin_log::LogTarget;
 use tauri_plugin_autostart::MacosLauncher;
 use once_cell::sync::OnceCell;
 use tauri::api::notification::Notification;
+use config::{init_config, is_first_run, get};
+use window::config_window;
+use server::start_server;
+use cmd::set_proxy;
+use updater::check_update;
 
 // Learn more about Tauri commands at https://tauri.app/v1/guides/features/command
 #[tauri::command]
@@ -46,15 +56,29 @@ fn main() {
                 info!("========== trusted: {} =================", trusted);
             }
             // Global handler
-            APP.get_or_init(|| app.clone());
+            APP.get_or_init(|| app.handle());
             info!("Init config store");
             init_config(app);
             if is_first_run() {
-                // todo
+                info!("========== first run =================");
+                config_window("config");
             }
+            start_server();
+            match get("proxy_enable") {
+                Some(v) => {
+                    if v.as_bool().unwrap() {
+                        let _ = set_proxy();
+                    }
+                },
+                None => {}
+            }
+            check_update(app.handle());
             Ok(())
         })
-        .invoke_handler(tauri::generate_handler![greet])
+        .invoke_handler(tauri::generate_handler![
+            set_proxy,
+            greet,
+        ])
         .run(tauri::generate_context!())
         .expect("error while running tauri application");
 }

@@ -5,8 +5,7 @@
       "iconAsTemplate": true
     },
     "bundle": {
-      "identifier": "com.rss.desktop",
-      "resources": ["resources/*"]
+      "identifier": "com.rss.desktop"
     }
   }
 }
