@@ -27,6 +27,9 @@ pub fn start_server() {
             }
         };
         for request in server.incoming_requests() {
+            println!("received request! method: {:?}, url: {:?}",
+                     request.method(),
+                     request.url());
             http_handle(request)
         }
     });
